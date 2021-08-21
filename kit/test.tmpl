@@ -1,0 +1,21 @@
+package {{.PackageName}}
+
+import (
+	"fmt"
+	"testing"
+
+	"github.com/stretchr/testify/assert"
+)
+
+var testCases = []struct {
+	input  int
+	expect int
+}{
+
+}
+
+func Test(t *testing.T) {
+	for _, c := range testCases {
+		assert.Equal(t, c.expect, sol(c.numbers, c.target))
+	}
+}
