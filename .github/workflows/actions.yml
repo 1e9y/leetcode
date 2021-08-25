@@ -13,7 +13,15 @@ jobs:
       - name: Setup Go
         uses: actions/setup-go@v2
         with:
-          go-version: 1.17
+          go-version: 1.16
 
-      - name: Test
-        run: for d in [0-9]* do; cd $d; go test .; cd -; done
+      - name: Download Go modules
+        run: go mod download
+
+      - name: Run tests
+        run: |
+          for d in [0-9]*; do
+            cd $d;
+            go test .;
+            cd - > /dev/null;
+          done
