@@ -7,15 +7,15 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-var testCases = []struct {
+var tests = []struct {
 	input  int
 	expect int
 }{
-
+    // TODO: Add test cases
 }
 
 func Test(t *testing.T) {
-	for _, c := range testCases {
-		assert.Equal(t, c.expect, sol(c.numbers, c.target))
+	for _, tt := range tests {
+		assert.Equal(t, tt.expect, sol(tt.numbers, tt.target))
 	}
 }
