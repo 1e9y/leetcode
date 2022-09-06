@@ -1,11 +1,13 @@
-name: Run Test Cases
+name: Run LeetCode solution tests
 
 on:
+  workflow_dispatch:
   push:
     branches: [ main ]
 
 jobs:
   test:
+    name: Test solutions
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -16,9 +18,6 @@ jobs:
           go-version-file: ./go.mod
           check-latest: true
           cache: true
-
-      - name: Download Go modules
-        run: go mod download
 
       - name: Run tests
         run: |
