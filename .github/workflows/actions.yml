@@ -1,4 +1,4 @@
-name: Run LeetCode solution tests
+name: Test LeetCode solutions
 
 on:
   workflow_dispatch:
@@ -7,10 +7,11 @@ on:
 
 jobs:
   test:
-    name: Test solutions
+    name: Run tests
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout repo
+        uses: actions/checkout@v3
 
       - name: Setup Go
         uses: actions/setup-go@v3
@@ -20,9 +21,4 @@ jobs:
           cache: true
 
       - name: Run tests
-        run: |
-          for d in [0-9]*; do
-            cd $d;
-            go test .;
-            cd - > /dev/null;
-          done
+        run: go test ./...
