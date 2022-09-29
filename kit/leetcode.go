@@ -24,13 +24,14 @@ const (
 var RootDir, _ = os.Getwd()
 
 type problem struct {
-	ID          int
-	Title       string
-	TitleSlug   string
-	URL         string
-	Snippet     string
-	FuncName    string
-	PackageName string
+	ID                 int
+	FrontendQuestionID int
+	Title              string
+	TitleSlug          string
+	URL                string
+	Snippet            string
+	FuncName           string
+	PackageName        string
 }
 
 type LeetCode struct {
@@ -82,11 +83,12 @@ func Init() error {
 
 	leetcode.index = make(map[int]*problem)
 	for _, p := range leetcode.all.StatStatusPairs {
-		leetcode.index[p.Stat.QuestionID] = &problem{
-			ID:        p.Stat.QuestionID,
-			Title:     p.Stat.QuestionTitle,
-			TitleSlug: p.Stat.QuestionTitleSlug,
-			URL:       fmt.Sprintf("%s/problems/%s", BaseURL, p.Stat.QuestionTitleSlug),
+		leetcode.index[p.Stat.FrontendQuestionID] = &problem{
+			ID:          p.Stat.FrontendQuestionID,
+			Title:       p.Stat.QuestionTitle,
+			TitleSlug:   p.Stat.QuestionTitleSlug,
+			URL:         fmt.Sprintf("%s/problems/%s", BaseURL, p.Stat.QuestionTitleSlug),
+			PackageName: strings.Replace(p.Stat.QuestionTitleSlug, "-", "_", -1),
 		}
 	}
 
@@ -140,7 +142,7 @@ func Get(id int) (*problem, error) {
 	q := &QuestionData{}
 	err = json.Unmarshal(data, q)
 	if err != nil {
-		return nil, fmt.Errorf("can't parse question data for problem %s: %w", id, err)
+		return nil, fmt.Errorf("can't parse question data for problem %v: %w", id, err)
 	}
 
 	for _, s := range q.Data.Question.CodeSnippets {
@@ -151,7 +153,7 @@ func Get(id int) (*problem, error) {
 	}
 
 	if problem.Snippet == "" {
-		return nil, fmt.Errorf("problem %n doesn't have solution in golang", id)
+		return nil, fmt.Errorf("problem %v doesn't have solution in golang", id)
 	}
 
 	return problem, nil
@@ -162,7 +164,7 @@ var solutionTmpls = template.Must(template.ParseFiles("./kit/source.tmpl", "./ki
 func Generate(problem *problem) {
 	fmt.Println("Generating template...")
 	n := problem.ID
-	name := strings.Replace(problem.TitleSlug, "-", "_", -1)
+	name := problem.PackageName
 
 	dir := fmt.Sprintf("%04d.%s", n, name)
 	path := filepath.Join(RootDir, dir)

@@ -11,9 +11,10 @@ type AllDataStatStatusPairs struct {
 }
 
 type AllDataStat struct {
-	QuestionID        int    `json:"question_id,omitempty"`
-	QuestionTitle     string `json:"question__title,omitempty"`
-	QuestionTitleSlug string `json:"question__title_slug,omitempty"`
+	FrontendQuestionID int    `json:"frontend_question_id"`
+	QuestionID         int    `json:"question_id,omitempty"`
+	QuestionTitle      string `json:"question__title,omitempty"`
+	QuestionTitleSlug  string `json:"question__title_slug,omitempty"`
 }
 
 type AllDataDifficulty struct {
