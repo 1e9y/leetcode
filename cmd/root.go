@@ -8,21 +8,14 @@ import (
 	"github.com/spf13/viper"
 )
 
-var cfgFile string
+var configFile string
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
-	Use:   "newApp",
-	Short: "A brief description of your application",
-	Long: `A longer description that spans multiple lines and likely contains
-examples and usage of using your application. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
-	// Uncomment the following line if your bare application
-	// has an action associated with it:
-	// Run: func(cmd *cobra.Command, args []string) { },
+	Use:   "leetcode",
+	Short: "LeetCode Kit is a collection of helpers for solving LeetCode problems",
+	// TODO: Complete long description
+	Long: ``,
 }
 
 // Execute adds all child commands to the root command and sets flags appropriately.
@@ -34,34 +27,25 @@ func Execute() {
 func init() {
 	cobra.OnInitialize(initConfig)
 
-	// Here you will define your flags and configuration settings.
-	// Cobra supports persistent flags, which, if defined here,
-	// will be global for your application.
-
-	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.newApp.yaml)")
-
-	// Cobra also supports local flags, which will only run
-	// when this action is called directly.
-	rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+	// Persistent flags. Those flags are global in the application.
+	rootCmd.PersistentFlags().StringVar(&configFile, "config", "", "config file (default is $HOME/.newApp.yaml)")
 }
 
 // initConfig reads in config file and ENV variables if set.
 func initConfig() {
-	if cfgFile != "" {
+	if configFile != "" {
 		// Use config file from the flag.
-		viper.SetConfigFile(cfgFile)
+		viper.SetConfigFile(configFile)
 	} else {
-		// Find home directory.
-		home, err := os.UserHomeDir()
-		cobra.CheckErr(err)
-
-		// Search config in home directory with name ".newApp" (without extension).
-		viper.AddConfigPath(home)
+		// Read config file from project directory
+		viper.AddConfigPath(".")
+		// Search config in home directory with name ".leetcode" (without extension).
 		viper.SetConfigType("yaml")
-		viper.SetConfigName(".newApp")
+		viper.SetConfigName(".leetcode")
 	}
 
-	viper.AutomaticEnv() // read in environment variables that match
+	// Read in environment variables that match.
+	viper.AutomaticEnv()
 
 	// If a config file is found, read it in.
 	if err := viper.ReadInConfig(); err == nil {
