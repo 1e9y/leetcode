@@ -25,7 +25,9 @@ var tests = []struct {
 }
 
 func Test(t *testing.T) {
-	for _, tt := range tests {
-		assert.Equal(t, tt.expect, findAndReplacePattern(tt.words, tt.pattern))
+	for i, tt := range tests {
+		t.Run(i, func(t *testing.T) {
+			assert.Equal(t, tt.expect, findAndReplacePattern(tt.words, tt.pattern))
+		})
 	}
 }
