@@ -11,8 +11,13 @@ end
 function check_changes
   set path $argv[1]
 
-  if not git diff --quiet $path
+  # echo "checking $path"
+  # if not git diff --quiet $path
+  set value (git status --short --porcelain $path)
+  if test -n "$value"
+  # if test -n (git status --short $path | awk '{ print $1 }')
     set message (get_commit_message $path)
+    echo $message
     pushd $path
     git add .
     git commit --message $message
