@@ -1,6 +1,6 @@
 module github.com/1e9y/leetcode
 
-go 1.18
+go 1.21
 
 require (
 	github.com/spf13/cobra v1.5.0
